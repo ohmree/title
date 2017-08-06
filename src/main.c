@@ -24,13 +24,14 @@ strdup(const char* s)
 
 /* Variables */
 
-const xcb_setup_t *setup;
+static const xcb_setup_t *setup;
+static const uint32_t values[] = { 10, 20, 200, 300 };
 
-int screen_nbr;
-xcb_connection_t *c;
-xcb_screen_iterator_t iter;
-xcb_screen_t *screen;
-xcb_window_t win;
+static int screen_nbr;
+static xcb_connection_t *c;
+static xcb_screen_iterator_t iter;
+static xcb_screen_t *screen;
+static xcb_window_t win;
 
 int
 main()
@@ -62,6 +63,9 @@ main()
                        XCB_WINDOW_CLASS_INPUT_OUTPUT, /* class               */
                        screen->root_visual,           /* visual              */
                        0, NULL);                      /* masks, not used yet */
+
+    /* Move the window to coordinates x = 10 and y = 20 */
+    xcb_configure_window (c, win, XCB_CONFIG_WINDOW_X | XCB_CONFIG_WINDOW_Y | XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT, values);
 
     /* Map the window on the screen */
     xcb_map_window(c, win);
